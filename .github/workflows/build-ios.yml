@@ -1,0 +1,53 @@
+name: Build iPhone app
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pocket-gemma-ios
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: macos-15
+    timeout-minutes: 35
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Unpack source bundle when uploaded from Windows
+        if: ${{ hashFiles('PocketGemma-source.zip') != '' }}
+        run: unzip -o PocketGemma-source.zip
+      - name: Show toolchain
+        run: bash scripts/select-xcode.sh
+      - name: Test persistence, context and model verification
+        run: swift test --package-path Packages/PocketCore
+      - name: Test IPA validation
+        run: python3 scripts/test-ipa-check.py
+      - name: Check large-file verification memory
+        run: swift run --package-path Packages/PocketCore -c release ValidationMemoryProbe
+      - name: Install project generator
+        run: brew install xcodegen
+      - name: Check chat interactions in the iOS simulator
+        run: bash scripts/check-ui.sh
+      - name: Save UI verification images
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: PocketGemma-UI-Checks
+          path: build/UI
+          retention-days: 1
+          if-no-files-found: ignore
+      - name: Build unsigned iPhone app
+        run: bash scripts/build-ios.sh
+      - name: Save app for AltStore
+        uses: actions/upload-artifact@v4
+        with:
+          name: PocketGemma-AltStore
+          path: build/PocketGemma-unsigned.ipa
+          retention-days: 1
+          compression-level: 0
+          if-no-files-found: error
+
