@@ -1,23 +1,23 @@
 # Pocket Gemma
 
-iPhoneで対応するローカルAIモデルを使う、SwiftUIのチャットアプリです。
+iPhone・iPadで対応するGemma・Qwenを端末内で使うSwiftUIチャットアプリです。
 
-## AltStore用IPAのビルド
+## AltStore Classicで更新
 
-Actionsの **Build iPhone app** を手動実行します。標準のmacOSランナーで
-コアテスト・UI操作テストを実行し、unsigned iPhone IPAを作成します。
-成功した実行の **PocketGemma-AltStore** 成果物にIPAが含まれます。
-署名とインストールはAltStore側で行います。成果物の保存期間は1日です。
+Sourcesに以下のURLを一度追加してください。
 
-## ソース
+https://raw.githubusercontent.com/taotaohoyo/pocket-gemma-build/main/altstore-source.json
 
-`PocketGemma-source.zip` にSwiftソース、ビルド設定、アセット、テストが
-入っています。ワークフローはZIPを展開してからビルドします。
-モデル本体・ユーザーの会話履歴・写真・署名証明書は含みません。
-UI操作テストはサンプルの会話で実行し、実際のAI推論とは別に検証します。
+最新版のunsigned IPAは[Releases](https://github.com/taotaohoyo/pocket-gemma-build/releases)で配布します。
+同じApple IDで上書き更新すると、保存済みのモデルと会話を引き継げます。
+無料Apple IDの署名期限のRefreshは引き続きAltStoreで行います。
+AltStore PAL向けの公証済みアプリではありません。
 
-必要環境は、対応するmacOSとXcode 26以降、XcodeGenです。
-ZIPを展開したMacでは `brew install xcodegen` と
-`bash scripts/build-ios.sh` でunsigned IPAを作成できます。
+## 公開ソースと確認
 
-詳細は `docs/PUBLIC-BUILD.md` を参照してください。
+PocketGemma-source.zipは監査したソース、ビルド設定、生成アセットと合成テスト用ファイルのみです。
+元の非公開リポジトリの履歴、利用者の会話・写真・動画、モデル本体、署名情報は含みません。
+ActionsのBuild iPhone appを手動実行すると、標準macOSランナーでコア・UIテストを実行してunsigned IPAを作成します。
+Actions添付の保持は1日ですが、ReleasesのIPAと更新ソースは継続して利用できます。
+UIテストは合成の返信を使います。実機AI推論・iOS 27との完全な外観比較を確認したものではありません。
+負荷・速さのゲージは端末とモデルサイズに基づく比較の目安です。

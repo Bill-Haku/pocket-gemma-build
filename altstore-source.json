@@ -1,0 +1,36 @@
+{
+  "name": "Pocket Gemma",
+  "subtitle": "iPhone・iPadで使うローカルAI",
+  "description": "Pocket GemmaのAltStore Classic向け更新ソースです。モデルはアプリ内で選んでダウンロードできます。",
+  "website": "https://github.com/taotaohoyo/pocket-gemma-build",
+  "iconURL": "https://raw.githubusercontent.com/taotaohoyo/pocket-gemma-build/main/altstore-icon.png",
+  "tintColor": "#007AFF",
+  "apps": [
+    {
+      "name": "Pocket Gemma",
+      "bundleIdentifier": "app.pocketgemma.personal",
+      "developerName": "taotaohoyo",
+      "subtitle": "あなたの端末に、AIを。",
+      "localizedDescription": "対応するGemma・Qwenモデルを端末に保存して会話できるチャットアプリ。日本語の会話、モデル別の生成設定、画像・動画・ファイル添付、会話履歴、ライト・ダーク表示に対応。会話は端末内で処理します。モデルの負荷・速さは比較の目安で、実測ベンチマークではありません。署名期限のRefreshはAltStoreで行ってください。",
+      "iconURL": "https://raw.githubusercontent.com/taotaohoyo/pocket-gemma-build/main/altstore-icon.png",
+      "tintColor": "#007AFF",
+      "category": "utilities",
+      "versions": [
+        {
+          "version": "1.0.9",
+          "buildVersion": "10",
+          "date": "2026-10-12T22:17:32+00:00",
+          "localizedDescription": "送信・末尾追従と下へ戻るボタンを修正。上部のぼかしを軽くし、下部の背景ぼかしを撤去。ガラスの＋メニュー、吹き出しのスクロールアニメーション、設定の説明、端末別の初回モデル選択と負荷・速さの目安を追加。iPadに対応。",
+          "downloadURL": "https://github.com/taotaohoyo/pocket-gemma-build/releases/download/v1.0.9/PocketGemma-1.0.9.ipa",
+          "size": 19148816,
+          "minOSVersion": "17.0"
+        }
+      ],
+      "appPermissions": {
+        "entitlements": [],
+        "privacy": {}
+      }
+    }
+  ],
+  "news": []
+}
