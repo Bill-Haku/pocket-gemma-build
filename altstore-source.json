@@ -17,6 +17,15 @@
       "category": "utilities",
       "versions": [
         {
+          "version": "1.0.12",
+          "buildVersion": "13",
+          "date": "2026-10-13T21:30:07+00:00",
+          "localizedDescription": "言語生成と画像エンコーダーのCPU/GPUを個別設定。言語GPUを維持して画像側だけCPUに変更できます。自動トークン削減の再試行を撤去し、構成別の比較履歴・ネイティブログ・委譲エラーとIPA内ライブラリの照合情報を追加。E2B・E4BのモデルSHA256を維持。CPU構成の画像・テキストと復帰は実モデルで検証。iPhone実機のGPU/CPU成功は未検証です。",
+          "downloadURL": "https://github.com/taotaohoyo/pocket-gemma-build/releases/download/v1.0.12/PocketGemma-1.0.12.ipa",
+          "size": 19972597,
+          "minOSVersion": "17.0"
+        },
+        {
           "version": "1.0.11",
           "buildVersion": "12",
           "date": "2026-10-13T17:27:20+00:00",
