@@ -11,11 +11,20 @@
       "bundleIdentifier": "app.pocketgemma.personal",
       "developerName": "taotaohoyo",
       "subtitle": "あなたの端末に、AIを。",
-      "localizedDescription": "対応するGemma・Qwenモデルを端末に保存して会話できるチャットアプリ。日本語の会話、モデル別の生成設定、画像・動画・ファイル添付、会話履歴、ライト・ダーク表示に対応。会話は端末内で処理します。モデルの負荷・速さは比較の目安で、実測ベンチマークではありません。署名期限のRefreshはAltStoreで行ってください。",
+      "localizedDescription": "Gemma・Qwenを端末に保存して使うチャットアプリ。画像・動画・PDF・Word・テキストの添付とモデル別設定、会話履歴に対応。任意でiCloud Driveへ会話と添付を自動バックアップできます。Gemma 4 12Bは大きなモデルのため実験対応です。負荷・速さは比較の目安です。署名期限のRefreshはAltStoreで行います。",
       "iconURL": "https://raw.githubusercontent.com/taotaohoyo/pocket-gemma-build/main/altstore-icon.png",
       "tintColor": "#007AFF",
       "category": "utilities",
       "versions": [
+        {
+          "version": "1.0.10",
+          "buildVersion": "11",
+          "date": "2026-10-13T03:50:30+00:00",
+          "localizedDescription": "送信後の入力欄消去・キーボード終了と吹き出しの慣性を修正。Liquid Glassの＋メニュー、会話一覧の境界ぼかし、モデル別アイコンと四色のアプリアイコン。画像はGPUで解析し、スキャンPDFとWord本文の読み取り、端末に合うモデルの自動選択、Gemma 4 12Bの実験対応、任意のiCloud Driveバックアップを追加。",
+          "downloadURL": "https://github.com/taotaohoyo/pocket-gemma-build/releases/download/v1.0.10/PocketGemma-1.0.10.ipa",
+          "size": 19875756,
+          "minOSVersion": "17.0"
+        },
         {
           "version": "1.0.9",
           "buildVersion": "10",
