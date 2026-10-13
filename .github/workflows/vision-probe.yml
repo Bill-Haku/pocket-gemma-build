@@ -1,0 +1,30 @@
+name: Diagnose native Gemma vision
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pocket-gemma-vision-probe
+  cancel-in-progress: false
+jobs:
+  probe:
+    runs-on: macos-15
+    timeout-minutes: 65
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unpack reviewed synthetic probe
+        run: unzip -o VisionProbe-source.zip
+      - name: Select installed toolchain
+        run: bash scripts/select-xcode.sh
+      - name: Exercise real pinned E2B and E4B with Metal and CPU vision
+        run: python3 scripts/run-vision-probe.py
+      - name: Preserve native logs, exclude model weights
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Gemma-Vision-Native-Logs
+          path: |
+            build/VisionProbe/*.log
+            build/VisionProbe/results.json
+          retention-days: 3
+          if-no-files-found: warn
