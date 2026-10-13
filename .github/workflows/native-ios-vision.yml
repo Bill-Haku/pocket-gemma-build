@@ -1,0 +1,29 @@
+name: Test real iOS Gemma vision
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pocket-gemma-native-ios
+  cancel-in-progress: false
+jobs:
+  native-ios:
+    runs-on: macos-15
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - run: unzip -o PocketGemma-source.zip
+      - run: unzip -o NativeVision-source.zip
+      - run: brew install xcodegen
+      - name: Run actual iOS native image and text inference
+        run: bash scripts/check-native-vision.sh
+      - name: Preserve native test evidence without weights
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Gemma-iOS-Native-Evidence
+          path: |
+            build/NativeVision/*.json
+            build/NativeVision/*.log
+          retention-days: 3
+          if-no-files-found: warn
