@@ -1,0 +1,30 @@
+name: Rebuild iOS vision LM layer
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pocket-gemma-native-rebuild
+  cancel-in-progress: false
+jobs:
+  native-runtime:
+    runs-on: macos-15
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - run: unzip -o PocketGemma-source.zip
+      - run: unzip -o NativeRuntime-source.zip
+      - run: brew install bazelisk
+      - name: Rebuild pinned LM layer against official LiteRT C runtime
+        run: bash NativeRuntime/build.sh 2>&1 | tee native-rebuild.log
+      - name: Preserve native build output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: PocketGemma-Rebuilt-NativeRuntime
+          path: |
+            build/NativeRuntime/PocketGemma-NativeRuntime.zip
+            build/NativeRuntime/Artifacts/native-runtime-build.json
+            native-rebuild.log
+          if-no-files-found: warn
+          retention-days: 3
