@@ -1,0 +1,93 @@
+name: Verify patched iOS vision and build IPA
+on:
+  workflow_dispatch:
+    inputs:
+      native_run_id:
+        description: Successful pinned native LM rebuild run ID
+        required: true
+        default: '38555665795'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: pocket-gemma-vision-candidate
+  cancel-in-progress: false
+jobs:
+  core-ui:
+    runs-on: macos-15
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - run: unzip -o PocketGemma-source.zip
+      - run: brew install xcodegen
+      - name: Core settings, privacy, cache and history regression tests
+        run: swift test --package-path Packages/PocketCore
+      - name: IPA package integrity regression tests
+        run: python3 scripts/test-ipa-check.py
+      - name: UI and animation regression tests
+        run: bash scripts/check-ui.sh
+      - name: Preserve UI evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: PocketGemma-Candidate-UI
+          path: build/UI
+          retention-days: 3
+  native-and-ipa:
+    needs: core-ui
+    runs-on: macos-15
+    timeout-minutes: 110
+    steps:
+      - uses: actions/checkout@v4
+      - run: unzip -o PocketGemma-source.zip
+      - run: unzip -o NativeVision-source.zip
+      - name: Wait for the selected native build to finish
+        env:
+          NATIVE_RUNTIME_RUN: ${{ inputs.native_run_id }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import json, os, time, urllib.request
+          run=os.environ['NATIVE_RUNTIME_RUN']
+          assert run.isdecimal(), 'Run ID must be numeric'
+          url=f'https://api.github.com/repos/taotaohoyo/pocket-gemma-build/actions/runs/{run}'
+          for _ in range(45):
+              req=urllib.request.Request(url,headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'User-Agent':'PocketGemma-native-verification'})
+              with urllib.request.urlopen(req,timeout=30) as r: result=json.load(r)
+              assert result['path']=='.github/workflows/rebuild-ios-runtime.yml', 'Wrong native workflow'
+              print('Native rebuild:',result['status'],result['conclusion'],flush=True)
+              if result['status']=='completed':
+                  assert result['conclusion']=='success', 'Native build failed; do not create an IPA'
+                  break
+              time.sleep(60)
+          else: raise SystemExit('Native build not finished; do not create an IPA')
+          PY
+      - uses: actions/download-artifact@v4
+        with:
+          name: PocketGemma-Rebuilt-NativeRuntime
+          run-id: ${{ inputs.native_run_id }}
+          github-token: ${{ github.token }}
+          path: build/native-artifact
+      - name: Verify native artifact and prepare local Swift package
+        run: python3 NativeRuntime/configure-app.py build/native-artifact/PocketGemma-NativeRuntime.zip
+      - run: brew install xcodegen
+      - name: Real E2B and E4B JPEG, text, recovery and memory tests
+        run: bash scripts/check-native-vision.sh
+      - name: Build unsigned Release IPA only after inference tests pass
+        run: bash scripts/build-ios.sh
+      - name: Preserve native inference evidence without model weights
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: PocketGemma-Candidate-Native-Evidence
+          path: |
+            build/NativeVision/*.json
+            build/NativeVision/*.log
+          retention-days: 3
+      - name: Preserve verified Release IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: PocketGemma-Candidate-AltStore
+          path: build/PocketGemma-unsigned.ipa
+          if-no-files-found: error
+          retention-days: 3
