@@ -17,6 +17,15 @@
       "category": "utilities",
       "versions": [
         {
+          "version": "1.0.13",
+          "buildVersion": "14",
+          "date": "2026-10-14T03:25:28+00:00",
+          "localizedDescription": "画像の最小再現テストを追加。写真処理を通さない同梱JPEGと、画像エンコーダー・アダプターのXNNPACK／組み込みCPU単体比較を実行できます。内部reshapeエラー・パッチ数・テンソル形状・使用メモリを診断に記録。モデルと公式0.18.0を維持。単体テスト成功は画像会話の成功を意味せず、iPhone実機の画像認識は未確認です。",
+          "downloadURL": "https://github.com/taotaohoyo/pocket-gemma-build/releases/download/v1.0.13/PocketGemma-1.0.13.ipa",
+          "size": 20044774,
+          "minOSVersion": "17.0"
+        },
+        {
           "version": "1.0.12",
           "buildVersion": "13",
           "date": "2026-10-13T21:30:07+00:00",
