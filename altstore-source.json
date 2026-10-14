@@ -17,6 +17,15 @@
       "category": "utilities",
       "versions": [
         {
+          "version": "1.0.14",
+          "buildVersion": "15",
+          "date": "2026-10-14T10:13:38+00:00",
+          "localizedDescription": "セクション読み込みの診断ログを改善。「Failed to map section」「Section not found」「not found. Skipping」の警告を保持し、モデル内セクションの不在とmmap失敗を切り分ける材料を残します。会話の除外・パス伏せ字・ログ上限を維持。モデルとLiteRT-LM 0.18.0を変更せず、自動CPU再試行も無効のままです。実機の画像認識解消は未確認です。",
+          "downloadURL": "https://github.com/taotaohoyo/pocket-gemma-build/releases/download/v1.0.14/PocketGemma-1.0.14.ipa",
+          "size": 20044818,
+          "minOSVersion": "17.0"
+        },
+        {
           "version": "1.0.13",
           "buildVersion": "14",
           "date": "2026-10-14T03:25:28+00:00",
